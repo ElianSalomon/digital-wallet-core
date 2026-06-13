@@ -1,0 +1,255 @@
+{
+  "info": {
+    "name": "digital-wallet-core",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "walletOrigenId",
+      "value": ""
+    },
+    {
+      "key": "walletDestinoId",
+      "value": ""
+    },
+    {
+      "key": "creditoId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Ana\",\n  \"apellido\": \"Lopez\",\n  \"email\": \"ana@example.com\",\n  \"password\": \"Password123\",\n  \"telefono\": \"5551112233\",\n  \"documentoIdentidad\": \"DOC001\",\n  \"fechaNacimiento\": \"1995-05-10\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"ana@example.com\",\n  \"password\": \"Password123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Wallets - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/wallets",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"alias\": \"principal\",\n  \"moneda\": \"MXN\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Wallets - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/wallets"
+      }
+    },
+    {
+      "name": "Wallets - Balance",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/wallets/{{walletOrigenId}}/balance"
+      }
+    },
+    {
+      "name": "Wallets - History",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/wallets/{{walletOrigenId}}/history"
+      }
+    },
+    {
+      "name": "Transactions - Deposit",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/transactions/deposit",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"walletDestinoId\": \"{{walletOrigenId}}\",\n  \"monto\": 1000.0000,\n  \"idempotencyKey\": \"deposit-001\",\n  \"descripcion\": \"Deposito inicial\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Transactions - Withdraw",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/transactions/withdraw",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"walletOrigenId\": \"{{walletOrigenId}}\",\n  \"monto\": 100.0000,\n  \"idempotencyKey\": \"withdraw-001\",\n  \"descripcion\": \"Retiro ATM\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Transactions - Transfer",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/transactions/transfer",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"walletOrigenId\": \"{{walletOrigenId}}\",\n  \"walletDestinoId\": \"{{walletDestinoId}}\",\n  \"monto\": 250.0000,\n  \"idempotencyKey\": \"transfer-001\",\n  \"descripcion\": \"Transferencia entre wallets\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Credits - Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/credits",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"walletDesembolsoId\": \"{{walletOrigenId}}\",\n  \"montoSolicitado\": 12000.0000,\n  \"tasaInteresAnual\": 24.0000,\n  \"plazoMeses\": 12\n}"
+        }
+      }
+    },
+    {
+      "name": "Credits - List",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/credits"
+      }
+    },
+    {
+      "name": "Credits - Approve",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/credits/{{creditoId}}/approve",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"montoAprobado\": 12000.0000\n}"
+        }
+      }
+    },
+    {
+      "name": "Credits - Payment Plan",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/credits/{{creditoId}}/payment-plan"
+      }
+    }
+  ]
+}
